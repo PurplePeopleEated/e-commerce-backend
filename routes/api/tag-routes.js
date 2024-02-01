@@ -83,6 +83,22 @@ Tag.update({tag_name:req.body.tag_name}, {
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+  Tag.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(deleted => {
+    if (!deleted) {
+      res.status(404).json({ message: 'No tag found with this id' });
+      return;
+    }
+    res.json({ message: 'Tag deleted' });
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json(err);
+  });
 });
 
 module.exports = router;
